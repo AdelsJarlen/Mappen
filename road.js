@@ -12,6 +12,14 @@ class Road {
         this.bottom = infinity;
     }
 
+    getLaneCenter(laneIndex) {
+        laneIndex = laneIndex < 0 ? 0 : laneIndex;
+        laneIndex = laneIndex > this.laneCount ? this.laneCount - 1 : laneIndex;
+
+        const laneWidth = this.width/this.laneCount;
+        return this.left + laneWidth / 2 + laneIndex * laneWidth;
+    }
+
     draw(ctx) {
         ctx.lineWidth = 5;
         ctx.strokeStyle = "White";
@@ -22,15 +30,15 @@ class Road {
                 this.right,
                 i / this.laneCount
             );
-
+            if (i > 0 && i < this.laneCount) {
+                ctx.setLineDash([20,20]);
+            } else {
+                ctx.setLineDash([]);
+            }
             ctx.beginPath();
             ctx.moveTo(x,this.top);
             ctx.lineTo(x,this.bottom);
             ctx.stroke();
         }
     }
-}
-
-function lerp(A,B,t) {
-    return A + (B - A) * t;
 }

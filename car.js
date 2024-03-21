@@ -46,18 +46,14 @@ class Car {
 
         
         // LEFT AND RIGHT       ref rotated unit circle
-        if(this.controls.left && this.controls.forward) {
-            this.angle += 0.03;
-        }
-        if(this.controls.left && this.controls.reverse) {
-            this.angle -= 0.03;
-        }
-        
-        if(this.controls.right && this.controls.forward) {
-            this.angle -= 0.03;
-        }
-        if(this.controls.right && this.controls.reverse) {
-            this.angle += 0.03;
+        if(this.speed != 0) {
+            const flip = this.speed > 0 ? 1 : -1; // Shorthand if statement
+            if(this.controls.left) {
+                this.angle += 0.03 * flip;
+            }
+            if(this.controls.right) {
+                this.angle -= 0.03 * flip;
+            }
         }
         
         // Using the unit circle we change the direction of movement according to the angle of the car

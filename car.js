@@ -46,16 +46,25 @@ class Car {
 
         
         // LEFT AND RIGHT       ref rotated unit circle
-        if(this.controls.left) {
+        if(this.controls.left && this.controls.forward) {
             this.angle += 0.03;
         }
-        
-        if(this.controls.right) {
+        if(this.controls.left && this.controls.reverse) {
             this.angle -= 0.03;
         }
         
-        this.y -= this.speed
+        if(this.controls.right && this.controls.forward) {
+            this.angle -= 0.03;
+        }
+        if(this.controls.right && this.controls.reverse) {
+            this.angle += 0.03;
+        }
         
+        // Using the unit circle we change the direction of movement according to the angle of the car
+        this.x -= Math.sin(this.angle)*this.speed;
+        this.y -= Math.cos(this.angle)*this.speed;
+
+        // - [ ] How do I change the anchor of the rotation.  
     }
 
     draw(ctx) {

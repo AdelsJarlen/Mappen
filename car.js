@@ -15,7 +15,27 @@ class Car {
     }
 
     update() {
+        this.#move();
+    }
 
+    draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(-this.angle);
+
+        ctx.beginPath();
+        ctx.rect(
+            -this.width/2,
+            -this.height/2,
+            this.width,
+            this.height
+        );
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    #move() {
         // FORWARD AND BACKWARDS
         if(this.controls.forward) {
             this.speed += this.acceleration;
@@ -60,23 +80,6 @@ class Car {
         this.x -= Math.sin(this.angle)*this.speed;
         this.y -= Math.cos(this.angle)*this.speed;
 
-        // - [ ] How do I change the anchor of the rotation.  
-    }
-
-    draw(ctx) {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(-this.angle);
-
-        ctx.beginPath();
-        ctx.rect(
-            -this.width/2,
-            -this.height/2,
-            this.width,
-            this.height
-        );
-        ctx.fill();
-
-        ctx.restore();
+        // - [ ] How do I change the anchor of the rotation. 
     }
 }

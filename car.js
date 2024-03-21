@@ -45,13 +45,13 @@ class Car {
         }
 
         
-        // LEFT AND RIGHT
+        // LEFT AND RIGHT       ref rotated unit circle
         if(this.controls.left) {
-            this.x -= 2;
+            this.angle += 0.03;
         }
         
         if(this.controls.right) {
-            this.x += 2;
+            this.angle -= 0.03;
         }
         
         this.y -= this.speed
@@ -59,13 +59,19 @@ class Car {
     }
 
     draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(-this.angle);
+
         ctx.beginPath();
         ctx.rect(
-            this.x-this.width/2,
-            this.y-this.height/2,
+            -this.width/2,
+            -this.height/2,
             this.width,
             this.height
         );
         ctx.fill();
+
+        ctx.restore();
     }
 }

@@ -15,10 +15,59 @@ class Car {
         this.controls = new Controls();
     }
 
-    update() {
+    update(roadBorders) {
         this.#move();
-        this.sensor.update();
+        this.polygon = this.#createPolygon();
+        this.sensor.update(roadBorders);
     }
+
+    // Method to calculate the vertices of a polygon, specifically designed to create a rectangle or square based on the object's width and height.
+    #createPolygon() {
+        // Initialize an empty array to hold the points of the polygon.
+        const points = [];
+        
+        // Calculate the radius of the circle that circumscribes the polygon.
+        // This is found by computing the hypotenuse of a right triangle with sides equal to half the object's width and height.
+        const rad = Math.hypot(this.width, this.height) / 2;
+        
+        // Calculate the angle (in radians) from the center of the polygon to a corner.
+        // This angle is used to adjust the orientation of the points based on the object's dimensions.
+        const alpha = Math.atan2(this.width, this.height);
+        
+        // Calculate and add the first vertex of the polygon.
+        // It is positioned by rotating a point on the circumscribing circle by 'this.angle - alpha'.
+        points.push({
+            x: this.x - Math.sin(this.angle - alpha) * rad,
+            y: this.y - Math.cos(this.angle - alpha) * rad
+        });
+        
+        // Calculate and add the second vertex of the polygon.
+        // Similar to the first, but the angle is adjusted by adding 'alpha' to 'this.angle'.
+        points.push({
+            x: this.x - Math.sin(this.angle + alpha) * rad,
+            y: this.y - Math.cos(this.angle + alpha) * rad
+        });
+        
+        // Calculate and add the third vertex of the polygon.
+        // The point is placed opposite to the first vertex by adding π to 'this.angle - alpha'.
+        // This effectively rotates the point 180 degrees to the opposite side of the polygon.
+        points.push({
+            x: this.x - Math.sin(Math.PI + this.angle - alpha) * rad,
+            y: this.y - Math.cos(Math.PI + this.angle - alpha) * rad
+        });
+        
+        // Calculate and add the fourth vertex of the polygon.
+        // This vertex is opposite to the second vertex, achieved by adding π to 'this.angle + alpha'.
+        points.push({
+            x: this.x - Math.sin(Math.PI + this.angle + alpha) * rad,
+            y: this.y - Math.cos(Math.PI + this.angle + alpha) * rad
+        });
+        
+        // Note: The method now creates a polygon by calculating four points.
+        // These points are determined by the object's position, the angle of orientation,
+        // and the dimensions (width and height) of the object.
+    }
+
 
     draw(ctx) {
         ctx.save();
